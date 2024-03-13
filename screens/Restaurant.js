@@ -1,5 +1,5 @@
 import { ScrollView, Text, View, Image, TouchableOpacity } from "react-native";
-import React, { Component, useLayoutEffect } from "react";
+import React, { Component, useEffect, useLayoutEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { urlFor } from "../sanity";
@@ -7,6 +7,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import Dish from "../components/Dish";
+import BasketWindow from "../components/BasketWindow";
+import { useDispatch } from "react-redux";
+import { setRestaurant } from "../slices/restaurantSlice";
 
 const Restaurant = () => {
   const {
@@ -14,6 +17,7 @@ const Restaurant = () => {
   } = useRoute();
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -21,8 +25,24 @@ const Restaurant = () => {
     });
   }, []);
 
+  useEffect(() => {
+    dispatch(
+      setRestaurant({
+        id,
+        imgUrl,
+        title,
+        rating,
+        genre,
+        address,
+        description,
+        dishes,
+      })
+    );
+  }, []);
+
   return (
     <>
+      <BasketWindow />
       <ScrollView>
         <View className="relative">
           <Image
@@ -57,17 +77,18 @@ const Restaurant = () => {
             <Text className="text-gray-500 mt-2 pb-4">{description}</Text>
           </View>
         </View>
-        <View>
+        <View className="pb-24">
           <Text className="px-4 pt-6 mb-3 font-bold text-xl">Menu</Text>
 
-          {dishes.map((dish) => (
-            <Dish 
-            key={dish._id}
-            id={dish._id}
-            name={dish.name}
-            description={dish.description}
-            price={dish.price}
-            image={dish.image}/>
+          {dishes?.map((dish) => (
+            <Dish
+              key={dish._id}
+              id={dish._id}
+              name={dish.name}
+              description={dish.description}
+              price={dish.price}
+              image={dish.image}
+            />
           ))}
         </View>
       </ScrollView>
