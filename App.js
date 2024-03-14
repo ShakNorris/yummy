@@ -19,6 +19,8 @@ export default function App() {
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Restaurant" component={Restaurant} />
             <Stack.Screen name="Basket" component={Basket} options={{presentation: "modal", headerShown: false}} />
+            <Stack.Screen name="PrepareOrder" component={PrepareOrder} options={{presentation: "fullScreenModal", headerShown: false}} />
+            <Stack.Screen name="Delivery" component={Delivery} options={{presentation: "fullScreenModal", headerShown: false}} />
           </Stack.Navigator>
         </Provider>
       </NavigationContainer>
